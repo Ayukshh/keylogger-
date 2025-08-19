@@ -10,14 +10,20 @@ Logs keystrokes locally or remotely, with optional encryption and stealth featur
 - Stealth mode (Windows only)
 - Optional persistence (Windows startup)
 
-## Usage
+## Where is the log file?
+
+- Logs are saved to a hidden file in your system's temp directory:
+  - **Linux:** `/tmp/winupdate.log`
+  - **Windows:** `C:\Users\<User>\AppData\Local\Temp\winupdate.log`
+
+## How to run
 
 1. **Install dependencies:**
    ```bash
    pip install pynput cryptography requests
    ```
 
-2. **Run the keylogger:**
+2. **Run:**
    ```bash
    python keylogger.py
    ```
@@ -25,17 +31,12 @@ Logs keystrokes locally or remotely, with optional encryption and stealth featur
 3. **Stop:**  
    Press `CTRL+C` in the terminal.
 
-## Configuration
+## Remote Logging
 
-Edit the top of `keylogger.py` to enable/disable features:
-- `STEALTH_MODE`
-- `PERSISTENCE`
-- `LOCAL_LOGGING`
-- `REMOTE_LOGGING`
-- `ENCRYPT_LOGS`
-- `REMOTE_SERVER` (for remote logging)
+- Set `REMOTE_LOGGING = True` and provide a valid `REMOTE_SERVER` URL.
+- Example: Use [Pipedream](https://pipedream.com) or [RequestBin](https://requestbin.com) for testing.
 
-## Disclaimer
+## Warning
 
-This project is for educational use only.  
-Do not use it
+For educational use only.  
+Do not use for unauthorized
